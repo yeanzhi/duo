@@ -4,14 +4,6 @@
 [![build status][travis-image]][travis-url]
 
 Duo Duo是一个借鉴了 [Component](https://github.com/component/component), [Browserify](https://github.com/substack/node-browserify) and [Go](http://golang.org/) 中最好的思想的下一代包管理工具，它让组织和编写前端代码变得更加快速。
-- [Features](#features)
-- [Installation](#installation)
-- [Getting Started](#getting-started)
-- [Command Line Usage](/docs/cli.md)
-- [Javascript API](/docs/api.md)
-- [Duo.js Plugins](https://github.com/duojs/duo/wiki/Third-Party-Libraries)
-- [FAQ](/docs/faq.md)
-- [Mailing List](https://groups.google.com/forum/#!forum/duojs)
 
 
 ## 特点

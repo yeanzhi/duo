@@ -3,8 +3,7 @@
 [![NPM version][npm-image]][npm-url]
 [![build status][travis-image]][travis-url]
 
-Duo is a next-generation package manager that blends the best ideas from [Component](https://github.com/component/component), [Browserify](https://github.com/substack/node-browserify) and [Go](http://golang.org/) to make organizing and writing front-end code quick and painless.
-
+Duo Duo是一个借鉴了 [Component](https://github.com/component/component), [Browserify](https://github.com/substack/node-browserify) and [Go](http://golang.org/) 中最好的思想的下一代包管理工具，它让组织和编写前端代码变得更加快速。
 - [Features](#features)
 - [Installation](#installation)
 - [Getting Started](#getting-started)
@@ -13,114 +12,24 @@ Duo is a next-generation package manager that blends the best ideas from [Compon
 - [Duo.js Plugins](https://github.com/duojs/duo/wiki/Third-Party-Libraries)
 - [FAQ](/docs/faq.md)
 - [Mailing List](https://groups.google.com/forum/#!forum/duojs)
-- `#duojs` on freenode
 
 
 ## Features
 
-  1. has first-class support for Javascript, HTML and CSS
-  2. exposes a unix-y command line interface
-  3. pulls source directly from GitHub with semantic versioning
-  4. supports source transforms, like Coffeescript or Sass
-  5. does not require a manifest
+  1. 对 Javascript、 HTML 和 CSS 一流的支持
+  2. 使用 unix-y 一样的命令行界面
+  3. 直接从 GitHub拉取代码源文件或者相应版本
+  4. 支持源转换，如 Coffeescript 或SASS
+  5. 不需要一个清单文件
 
-
-## Installation
-
-Install Duo straight from `npm` with:
-
-```
-$ npm install -g duo
-```
-
-## Getting Started
-
-To get started just write normal Javascript, requiring dependencies straight from the file system or from GitHub as you need them:
-
-```js
-var uid = require('matthewmueller/uid');
-var fmt = require('yields/fmt');
-
-var msg = fmt('Your unique ID is %s!', uid());
-window.alert(msg);
-```
-
-Then use `duo` to install your dependencies and build your file:
-
-```
-$ duo index.js
-```
-
-Finally, drop a single `<script>` onto your page and you're done!
-
-```html
-<script src="build/index.js"></script>
-```
-
-Same goes for CSS! You can require dependencies and assets from the file system or straight from GitHub:
-
-```css
-@import 'necolas/normalize.css';
-
-body {
-  color: teal;
-  background: url('./background-image.jpg');
-}
-```
-
-Then bundle up your CSS with `duo`:
-
-```
-$ duo index.css
-```
-
-And add your bundled-up stylesheet to your page!
-
-```html
-<link rel="stylesheet" href="build/index.css">
-```
-
-## Authenticate with Github
-
-We recommend that you authenticate with Github so you can increase your rate limit and allow you to pull from private repositories. To do that, add the following entry to your `~/.netrc` file:
-
-    machine api.github.com
-      login <username>
-      password <token>
-
-You can create a new `token` here: https://github.com/settings/tokens/new
-
-## Debugging
-
-If you run into an issue with Duo, often times you can resolve it by prepending `DEBUG=duo*` to your `$COMMAND`:
-
-```bash
-$ DEBUG=duo* $COMMAND
-```
-
-Example:
-
-```bash
-$ DEBUG=duo* duo index.js
-```
-
-If you can't figure it out, you should open an issue: https://github.com/duojs/duo/issues
-
-## Test
-
-Download this repository and run:
-
-```bash
-make test
-```
-
-## Authors
+更多中文教程与介绍请看[这里](http://duo.yeanzhi.cn/)
+## 作者
 
 - [Matthew Mueller](https://github.com/MatthewMueller)
 - [Amir Abu Shareb](https://github.com/yields)
 - Plus many more wonderful [contributors](https://github.com/duojs/duo/graphs/contributors)!
 
-## License
+## 版权
 
 The MIT License
 

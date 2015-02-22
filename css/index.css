@@ -663,7 +663,7 @@ p > code {
 .Footer {
     position: relative;
     text-align: center;
-    background: url('lib/footer/background.jpg') center center no-repeat;
+    background: url('../background.jpg') center center no-repeat;
     background-size: cover;
     padding: 12em 0 8em;
     color: white;

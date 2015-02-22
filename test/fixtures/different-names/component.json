@@ -1,7 +1,0 @@
-{
-  "name": "different-names",
-  "version": "0.0.1",
-  "dependencies": {
-    "guille/ms.js": "*"
-  }
-}

@@ -1,6 +1,0 @@
-{
-  "name": "user-repo-dep",
-  "dependencies": {
-    "component/type": "*"
-  }
-}

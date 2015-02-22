@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "component/assert": "*",
+    "component/event": "*"
+  },
+  "development": {
+    "ianstormtaylor/trigger-event": "*",
+    "component/event": "*"
+  }
+}

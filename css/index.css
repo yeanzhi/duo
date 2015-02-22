@@ -728,7 +728,7 @@ p > code {
     position: relative;
     overflow: hidden;
     text-align: center;
-    background: url('lib/header/background.jpg') center center no-repeat;
+    background: url('../background.jpg') center center no-repeat;
     background-size: cover;
     color: white;
     padding: 0 2em 20em;

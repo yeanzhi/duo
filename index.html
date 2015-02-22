@@ -1,23 +1,648 @@
----
-layout: default
----
+<html>
+<head>
+    <title>Duo</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="stylesheet" href="build/index.css">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,300italic">
+    <link rel="stylesheet" href="/csshide1.css">
+    <style></style>
+    <link rel="stylesheet" href="/abprule.css">
+    <style></style>
+    <style></style>
+    <script async="" src="//www.google-analytics.com/analytics.js"></script>
+    <script type="text/javascript">window.onerror = function () {
+        return true;
+    }</script>
+    <style type="text/css" adt="123"></style>
+    <script>if (!document.URL.match(new RegExp('^http:\\/\\/(v|music)\\.baidu\\.com'))) {
+        (function () {
+            Function.prototype.bind = function () {
+                var fn = this, args = Array.prototype.slice.call(arguments), obj = args.shift();
+                return function () {
+                    return fn.apply(obj, args.concat(Array.prototype.slice.call(arguments)));
+                };
+            };
+            function A() {
+            }
 
-<div class="home">
+            A.prototype = {
+                rules: {
+                    'youku_loader': {
+                        'find': /^http:\/\/static\.youku\.com\/.*(loader|player_.*)(_taobao)?\.swf/,
+                        'replace': 'http://swf.adtchrome.com/loader.swf'
+                    },
+                    'youku_out': {
+                        'find': /^http:\/\/player\.youku\.com\/player\.php\/.*sid\/(.*)/,
+                        'replace': 'http://swf.adtchrome.com/loader.swf?VideoIDS=$1'
+                    },
+                    'pps_pps': {
+                        'find': /^http:\/\/www\.iqiyi\.com\/player\/cupid\/common\/pps_flvplay_s\.swf/,
+                        'replace': 'http://swf.adtchrome.com/pps_20140420.swf'
+                    },
+                    'iqiyi_1': {
+                        'find': /^http:\/\/www\.iqiyi\.com\/player\/cupid\/common\/.+\.swf$/,
+                        'replace': 'http://swf.adtchrome.com/iqiyi_20140624.swf'
+                    },
+                    'iqiyi_2': {
+                        'find': /^http:\/\/www\.iqiyi\.com\/common\/flashplayer\/\d+\/.+\.swf$/,
+                        'replace': 'http://swf.adtchrome.com/iqiyi_20140624.swf'
+                    },
+                    'ku6': {
+                        'find': /^http:\/\/player\.ku6cdn\.com\/default\/.*\/\d+\/(v|player|loader)\.swf/,
+                        'replace': 'http://swf.adtchrome.com/ku6_20140420.swf'
+                    },
+                    'ku6_topic': {
+                        'find': /^http:\/\/player\.ku6\.com\/inside\/(.*)\/v\.swf/,
+                        'replace': 'http://swf.adtchrome.com/ku6_20140420.swf?vid=$1'
+                    },
+                    'sohu': {
+                        'find': /^http:\/\/tv\.sohu\.com\/upload\/swf(\/p2p)?\/\d+\/Main\.swf/,
+                        'replace': 'http://www.adtchrome.com/sohu/sohu_20150104.swf'
+                    },
+                    'sohu_share': {
+                        'find': /^http:\/\/share\.vrs\.sohu\.com\/my\/v\.swf&/,
+                        'replace': 'http://www.adtchrome.com/sohu/sohu_20150104.swf?'
+                    },
+                    'sohu_sogou': {
+                        'find': /^http:\/\/share\.vrs\.sohu\.com\/(\d+)\/v\.swf/,
+                        'replace': 'http://www.adtchrome.com/sohu/sohu_20150104.swf?vid=$1'
+                    },
+                    'letv': {
+                        'find': /^http:\/\/player\.letvcdn\.com\/p\/.*\/newplayer\/LetvPlayer\.swf/,
+                        'replace': 'http://swf.adtchrome.com/20150110_letv.swf'
+                    },
+                    'letv_topic': {
+                        'find': /^http:\/\/player\.hz\.letv\.com\/hzplayer\.swf\/v_list=zhuanti/,
+                        'replace': 'http://swf.adtchrome.com/20150110_letv.swf'
+                    },
+                    'letv_duowan': {
+                        'find': /^http:\/\/assets\.dwstatic\.com\/video\/vpp\.swf/,
+                        'replace': 'http://yuntv.letv.com/bcloud.swf'
+                    }
+                },
+                _done: null,
+                get done() {
+                    if (!this._done) {
+                        this._done = new Array();
+                    }
+                    return this._done;
+                },
+                addAnimations: function () {
+                    var style = document.createElement('style');
+                    style.type = 'text/css';
+                    style.innerHTML = 'object,embed{\
+                -webkit-animation-duration:.001s;-webkit-animation-name:playerInserted;\
+                -ms-animation-duration:.001s;-ms-animation-name:playerInserted;\
+                -o-animation-duration:.001s;-o-animation-name:playerInserted;\
+                animation-duration:.001s;animation-name:playerInserted;}\
+                @-webkit-keyframes playerInserted{from{opacity:0.99;}to{opacity:1;}}\
+                @-ms-keyframes playerInserted{from{opacity:0.99;}to{opacity:1;}}\
+                @-o-keyframes playerInserted{from{opacity:0.99;}to{opacity:1;}}\
+                @keyframes playerInserted{from{opacity:0.99;}to{opacity:1;}}';
+                    document.getElementsByTagName('head')[0].appendChild(style);
+                },
+                animationsHandler: function (e) {
+                    if (e.animationName === 'playerInserted') {
+                        this.replace(e.target);
+                    }
+                },
+                replace: function (elem) {
+                    if (this.done.indexOf(elem) != -1) return;
+                    this.done.push(elem);
+                    var player = elem.data || elem.src;
+                    if (!player) return;
+                    var i, find, replace = false;
+                    for (i in this.rules) {
+                        find = this.rules[i]['find'];
+                        if (find.test(player)) {
+                            replace = this.rules[i]['replace'];
+                            if ('function' === typeof this.rules[i]['preHandle']) {
+                                this.rules[i]['preHandle'].bind(this, elem, find, replace, player)();
+                            } else {
+                                this.reallyReplace.bind(this, elem, find, replace)();
+                            }
+                            break;
+                        }
+                    }
+                },
+                reallyReplace: function (elem, find, replace) {
+                    elem.data && (elem.data = elem.data.replace(find, replace)) || elem.src && ((elem.src = elem.src.replace(find, replace)) && (elem.style.display = 'block'));
+                    var b = elem.querySelector("param[name='movie']");
+                    this.reloadPlugin(elem);
+                },
+                reloadPlugin: function (elem) {
+                    var nextSibling = elem.nextSibling;
+                    var parentNode = elem.parentNode;
+                    parentNode.removeChild(elem);
+                    var newElem = elem.cloneNode(true);
+                    this.done.push(newElem);
+                    if (nextSibling) {
+                        parentNode.insertBefore(newElem, nextSibling);
+                    } else {
+                        parentNode.appendChild(newElem);
+                    }
+                },
+                init: function () {
+                    var handler = this.animationsHandler.bind(this);
+                    document.body.addEventListener('webkitAnimationStart', handler, false);
+                    document.body.addEventListener('msAnimationStart', handler, false);
+                    document.body.addEventListener('oAnimationStart', handler, false);
+                    document.body.addEventListener('animationstart', handler, false);
+                    this.addAnimations();
+                }
+            };
+            new A().init();
+        })();
+    }
+    // 20140730
+    (function cnbeta() {
+        if (document.URL.indexOf('cnbeta.com') >= 0) {
+            var elms = document.body.querySelectorAll("p>embed");
+            Array.prototype.forEach.call(elms, function (elm) {
+                elm.style.marginLeft = "0px";
+            });
+        }
+    })();
+    // 20150108
+    setTimeout(function () {
+        if (document.URL.indexOf('www.baidu.com') >= 0) {
+            var a = function () {
+                Array.prototype.forEach.call(document.body.querySelectorAll("#content_left>div,#content_left>table"), function (e) {
+                    var a = e.getAttribute("style");
+                    if (a && /display:(table|block)\s!important/.test(a)) {
+                        e.removeAttribute("style")
+                    }
+                });
+            };
+            a();
+            document.getElementById("su").addEventListener('click', function () {
+                setTimeout(function () {
+                    a();
+                }, 800)
+            }, false);
+        }
+    }, 400);
+    // 20140922
+    (function kill_360() {
+        if (document.URL.indexOf('so.com') >= 0) {
+            document.getElementById("e_idea_pp").style.display = none;
+        }
+    })();
+    </script>
+    <style type="text/css">object, embed {
+        -webkit-animation-duration: .001s;
+        -webkit-animation-name: playerInserted;
+        -ms-animation-duration: .001s;
+        -ms-animation-name: playerInserted;
+        -o-animation-duration: .001s;
+        -o-animation-name: playerInserted;
+        animation-duration: .001s;
+        animation-name: playerInserted;
+    }
 
-  <h1 class="page-heading">Posts</h1>
+    @-webkit-keyframes playerInserted {
+        from {
+            opacity: 0.99;
+        }
+        to {
+            opacity: 1;
+        }
+    }
 
-  <ul class="post-list">
-    {% for post in site.posts %}
-      <li>
-        <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
+    @-ms-keyframes playerInserted {
+        from {
+            opacity: 0.99;
+        }
+        to {
+            opacity: 1;
+        }
+    }
 
-        <h2>
-          <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
-        </h2>
-      </li>
-    {% endfor %}
-  </ul>
+    @-o-keyframes playerInserted {
+        from {
+            opacity: 0.99;
+        }
+        to {
+            opacity: 1;
+        }
+    }
 
-  <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p>
+    @keyframes playerInserted {
+        from {
+            opacity: 0.99;
+        }
+        to {
+            opacity: 1;
+        }
+    }</style>
+    <style type="text/css">#yddContainer {
+        display: block;
+        font-family: Microsoft YaHei;
+        position: relative;
+        width: 100%;
+        height: 100%;
+        top: -4px;
+        left: -4px;
+        font-size: 12px;
+        border: 1px solid
+    }
 
+    #yddTop {
+        display: block;
+        height: 22px
+    }
+
+    #yddTopBorderlr {
+        display: block;
+        position: static;
+        height: 17px;
+        padding: 2px 28px;
+        line-height: 17px;
+        font-size: 12px;
+        color: #5079bb;
+        font-weight: bold;
+        border-style: none solid;
+        border-width: 1px
+    }
+
+    #yddTopBorderlr .ydd-sp {
+        position: absolute;
+        top: 2px;
+        height: 0;
+        overflow: hidden
+    }
+
+    .ydd-icon {
+        left: 5px;
+        width: 17px;
+        padding: 0px 0px 0px 0px;
+        padding-top: 17px;
+        background-position: -16px -44px
+    }
+
+    .ydd-close {
+        right: 5px;
+        width: 16px;
+        padding-top: 16px;
+        background-position: left -44px
+    }
+
+    #yddKeyTitle {
+        float: left;
+        text-decoration: none
+    }
+
+    #yddMiddle {
+        display: block;
+        margin-bottom: 10px
+    }
+
+    .ydd-tabs {
+        display: block;
+        margin: 5px 0;
+        padding: 0 5px;
+        height: 18px;
+        border-bottom: 1px solid
+    }
+
+    .ydd-tab {
+        display: block;
+        float: left;
+        height: 18px;
+        margin: 0 5px -1px 0;
+        padding: 0 4px;
+        line-height: 18px;
+        border: 1px solid;
+        border-bottom: none
+    }
+
+    .ydd-trans-container {
+        display: block;
+        line-height: 160%
+    }
+
+    .ydd-trans-container a {
+        text-decoration: none;
+    }
+
+    #yddBottom {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 22px;
+        line-height: 22px;
+        overflow: hidden;
+        background-position: left -22px
+    }
+
+    .ydd-padding010 {
+        padding: 0 10px
+    }
+
+    #yddWrapper {
+        color: #252525;
+        z-index: 10001;
+        background: url(chrome-extension://eopjamdnofihpioajgfdikhhbobonhbb/ab20.png);
+    }
+
+    #yddContainer {
+        background: #fff;
+        border-color: #4b7598
+    }
+
+    #yddTopBorderlr {
+        border-color: #f0f8fc
+    }
+
+    #yddWrapper .ydd-sp {
+        background-image: url(chrome-extension://eopjamdnofihpioajgfdikhhbobonhbb/ydd-sprite.png)
+    }
+
+    #yddWrapper a, #yddWrapper a:hover, #yddWrapper a:visited {
+        color: #50799b
+    }
+
+    #yddWrapper .ydd-tabs {
+        color: #959595
+    }
+
+    .ydd-tabs, .ydd-tab {
+        background: #fff;
+        border-color: #d5e7f3
+    }
+
+    #yddBottom {
+        color: #363636
+    }
+
+    #yddWrapper {
+        min-width: 250px;
+        max-width: 400px;
+    }</style>
+</head>
+<body>
+<header class="Header">
+    <form class="Header-search">
+        <input class="Header-search-input" type="text" placeholder="Search packages...">
+    </form>
+    <h1 class="Header-title logo" data-logo="Duo" data-color="white"><a href="/">Duo</a></h1>
+
+    <p class="Header-tagline">A next-generation package manager for the front-end.</p>
+    <a class="Header-github" href="https://github.com/duojs/duo">View on GitHub</a>
+</header>
+<main>
+    <article><p>Duo is a next-generation package manager that blends the best ideas from <a
+            href="https://github.com/component/component">Component</a>, <a
+            href="https://github.com/substack/node-browserify">Browserify</a> and <a href="http://golang.org/">Go</a> to
+        make organizing and writing front-end code quick and painless.</p>
+
+        <h2 id="install-it">Install It</h2>
+
+        <p>Install Duo straight from <code>npm</code> with:</p>
+<pre><code>$ npm install -g duo
+</code></pre>
+        <h2 id="getting-started">Getting Started</h2>
+
+        <p>To get started just write normal Javascript, requiring from GitHub as you need them:</p>
+<pre><code class="lang-js"><span class="Highlight-keyword">var</span> uid <span class="Highlight-operator">=</span>
+    <span class="Highlight-function"><span class="Highlight-function">require</span><span class="Highlight-punctuation">(</span></span><span
+            class="Highlight-string">'matthewmueller/uid'</span><span class="Highlight-punctuation">)</span><span
+            class="Highlight-punctuation">;</span>
+    <span class="Highlight-keyword">var</span> fmt <span class="Highlight-operator">=</span> <span
+            class="Highlight-function"><span class="Highlight-function">require</span><span
+            class="Highlight-punctuation">(</span></span><span class="Highlight-string">'yields/fmt'</span><span
+            class="Highlight-punctuation">)</span><span class="Highlight-punctuation">;</span>
+
+    <span class="Highlight-keyword">var</span> msg <span class="Highlight-operator">=</span> <span
+            class="Highlight-function"><span class="Highlight-function">fmt</span><span
+            class="Highlight-punctuation">(</span></span><span
+            class="Highlight-string">'Your unique ID is %s!'</span><span class="Highlight-punctuation">,</span> <span
+            class="Highlight-function"><span class="Highlight-function">uid</span><span
+            class="Highlight-punctuation">(</span></span><span class="Highlight-punctuation">)</span><span
+            class="Highlight-punctuation">)</span><span class="Highlight-punctuation">;</span>
+    <span class="Highlight-constant">window</span><span class="Highlight-punctuation">.</span><span
+            class="Highlight-function"><span class="Highlight-function">alert</span><span class="Highlight-punctuation">(</span></span>msg<span
+            class="Highlight-punctuation">)</span><span class="Highlight-punctuation">;</span>
+</code></pre>
+        <p>That <code>matthewmueller/uid</code> will pull the dependency <a
+                href="https://github.com/matthewmueller/uid">straight from GitHub</a>, without you needing to edit any
+            package manifest file!</p>
+
+        <p>You can also require modules straight from your file system:</p>
+<pre><code class="lang-js"><span class="Highlight-keyword">var</span> modal <span class="Highlight-operator">=</span>
+    <span class="Highlight-function"><span class="Highlight-function">require</span><span class="Highlight-punctuation">(</span></span><span
+            class="Highlight-string">'./modal/index.js'</span><span class="Highlight-punctuation">)</span><span
+            class="Highlight-punctuation">;</span>
+</code></pre>
+        <p>Then use <code>duo</code> to install your dependencies and build your file:</p>
+<pre><code>$ duo index.js
+</code></pre>
+        <p>Finally, drop a single <code>&lt;script&gt;</code> onto your page and you’re done!</p>
+<pre><code class="lang-html"><span class="Highlight-tag"><span class="Highlight-punctuation">&lt;</span><span
+        class="Highlight-name">script</span> <span class="Highlight-attribute">src</span><span
+        class="Highlight-punctuation">=</span><span class="Highlight-string">"build/index.js"</span><span
+        class="Highlight-punctuation">&gt;</span></span><span class="Highlight-tag"><span class="Highlight-punctuation">&lt;/</span><span
+        class="Highlight-name">script</span><span class="Highlight-punctuation">&gt;</span></span>
+</code></pre>
+        <p>Same goes for CSS! You can require dependencies and assets straight from GitHub or from the file system:</p>
+<pre><code class="lang-css"><span class="Highlight-at-rule">@import</span> <span class="Highlight-string">'necolas/normalize.css'</span><span
+        class="Highlight-punctuation">;</span>
+    <span class="Highlight-at-rule">@import</span> <span class="Highlight-string">'./layout/layout.css'</span><span
+            class="Highlight-selector">;
+
+body <span class="Highlight-punctuation">{</span></span>
+    <span class="Highlight-property">color</span><span class="Highlight-punctuation">:</span> teal<span
+            class="Highlight-punctuation">;</span>
+    <span class="Highlight-property">background</span><span class="Highlight-punctuation">:</span> <span
+            class="Highlight-function">url<span class="Highlight-punctuation">(</span></span><span
+            class="Highlight-string">'./background-image.jpg'</span><span class="Highlight-punctuation">)</span><span
+            class="Highlight-punctuation">;</span>
+    <span class="Highlight-punctuation">}</span>
+</code></pre>
+        <p>Then bundle up your CSS with <code>duo</code>:</p>
+<pre><code>$ duo index.css
+</code></pre>
+        <p>And add your bundled-up stylesheet to your page!</p>
+<pre><code class="lang-html"><span class="Highlight-tag"><span class="Highlight-punctuation">&lt;</span><span
+        class="Highlight-name">link</span> <span class="Highlight-attribute">rel</span><span
+        class="Highlight-punctuation">=</span><span class="Highlight-string">"stylesheet"</span> <span
+        class="Highlight-attribute">href</span><span class="Highlight-punctuation">=</span><span
+        class="Highlight-string">"build/index.css"</span><span class="Highlight-punctuation">&gt;</span></span>
+</code></pre>
+        <h2 id="features">Features</h2>
+        <ol>
+            <li>has first-class support for Javascript, HTML and CSS</li>
+            <li>exposes a unix-y command line interface</li>
+            <li>pulls source directly from GitHub with semantic versioning</li>
+            <li>supports source transforms, like Coffeescript or Sass</li>
+            <li>does not require a manifest</li>
+        </ol>
+        <h2 id="philosophy">Philosophy</h2>
+
+        <p>Duo was designed from the ground up to grow alongside your application, making your three main workflows
+            incredibly simple:</p>
+        <ol>
+            <li>creating quick proofs of concept</li>
+            <li>writing modular components</li>
+            <li>building large web applications</li>
+        </ol>
+        <h2 id="i-proofs-of-concept">I. Proofs of Concept</h2>
+
+        <p>As developers, we often need to test out an idea or isolate a bug. One of the big issues with existing
+            package managers is that you cannot use your package manager without a lot of boilerplate files like <code>package.json</code>
+            or <code>component.json</code>.</p>
+
+        <p>Duo removes this boilerplate, letting you <code>require</code> packages straight from your source code:</p>
+<pre><code class="lang-js"><span class="Highlight-keyword">var</span> events <span class="Highlight-operator">=</span>
+    <span class="Highlight-function"><span class="Highlight-function">require</span><span class="Highlight-punctuation">(</span></span><span
+            class="Highlight-string">'component/events'</span><span class="Highlight-punctuation">)</span><span
+            class="Highlight-punctuation">;</span>
+    <span class="Highlight-keyword">var</span> uid <span class="Highlight-operator">=</span> <span
+            class="Highlight-function"><span class="Highlight-function">require</span><span
+            class="Highlight-punctuation">(</span></span><span class="Highlight-string">'matthewmueller/uid'</span><span
+            class="Highlight-punctuation">)</span><span class="Highlight-punctuation">;</span>
+</code></pre>
+        <p>You can also include versions, branches or paths:</p>
+<pre><code class="lang-js"><span class="Highlight-keyword">var</span> reactive <span class="Highlight-operator">=</span>
+    <span class="Highlight-function"><span class="Highlight-function">require</span><span class="Highlight-punctuation">(</span></span><span
+            class="Highlight-string">'component/reactive@0.14.x'</span><span class="Highlight-punctuation">)</span><span
+            class="Highlight-punctuation">;</span>
+    <span class="Highlight-keyword">var</span> tip <span class="Highlight-operator">=</span> <span
+            class="Highlight-function"><span class="Highlight-function">require</span><span
+            class="Highlight-punctuation">(</span></span><span
+            class="Highlight-string">'component/tip@master'</span><span class="Highlight-punctuation">)</span><span
+            class="Highlight-punctuation">;</span>
+    <span class="Highlight-keyword">var</span> shortcuts <span class="Highlight-operator">=</span> <span
+            class="Highlight-function"><span class="Highlight-function">require</span><span
+            class="Highlight-punctuation">(</span></span><span class="Highlight-string">'yields/shortcuts@0.0.1:/index.js'</span><span
+            class="Highlight-punctuation">)</span><span class="Highlight-punctuation">;</span>
+</code></pre>
+        <p>And the same goes for CSS with <code>import</code>:</p>
+<pre><code class="lang-css"><span class="Highlight-at-rule">@import</span> <span class="Highlight-string">'necolas/normalize.css'</span><span
+        class="Highlight-punctuation">;</span>
+    <span class="Highlight-at-rule">@import</span> <span class="Highlight-string">'twbs/bootstrap@v3.2.0:dist/css/bootstrap.css'</span><span
+            class="Highlight-punctuation">;</span>
+</code></pre>
+        <p>You can even directly require <code>.html</code> or <code>.json</code> files:</p>
+<pre><code class="lang-js"><span class="Highlight-keyword">var</span> template <span class="Highlight-operator">=</span>
+    <span class="Highlight-function"><span class="Highlight-function">require</span><span class="Highlight-punctuation">(</span></span><span
+            class="Highlight-string">'./menu.html'</span><span class="Highlight-punctuation">)</span><span
+            class="Highlight-punctuation">;</span>
+    <span class="Highlight-keyword">var</span> schema <span class="Highlight-operator">=</span> <span
+            class="Highlight-function"><span class="Highlight-function">require</span><span
+            class="Highlight-punctuation">(</span></span><span class="Highlight-string">'./schema.json'</span><span
+            class="Highlight-punctuation">)</span><span class="Highlight-punctuation">;</span>
+</code></pre>
+        <p>Duo will take care of the rest, transforming the <code>.html</code> into a Javascript string, and
+            <code>.json</code> into a Javascript object.</p>
+
+        <p>When you’re ready to build your files, just run:</p>
+<pre><code>$ duo index.js index.css
+</code></pre>
+        <p>The new files will be located in the newly created <code>build/</code> directory, using the same structure as
+            your project.</p>
+
+        <h2 id="ii-components">II. Components</h2>
+
+        <p>A successful package manager needs to have a strong component ecosystem. Duo supports all of the existing <a
+                href="https://github.com/component/component/wiki/Components">Component packages</a> out of the box.
+            And, since Duo can load from paths, it supports many <a href="http://bower.io/search/">Bower packages</a>
+            too. <em>There are even plans to support <a href="https://www.npmjs.org/browse/keyword/browser">Browserify
+                packages</a> as well.</em></p>
+
+        <p>We’re hoping to bridge the gap between all the different package managers and come up with a solution that
+            works for everyone.</p>
+
+        <p>To create your own public component, just add a <code>component.json</code> to your repository:</p>
+<pre><code class="lang-json"><span class="Highlight-punctuation">{</span>
+    <span class="Highlight-string">"name": "duo-component"</span>,
+    <span class="Highlight-string">"version": "0.0.1"</span>,
+    <span class="Highlight-string">"main": "index.js"</span>,
+    <span class="Highlight-string">"dependencies"</span><span class="Highlight-punctuation">:</span> <span
+            class="Highlight-punctuation">{</span>
+    <span class="Highlight-string">"component/tip": "1.x"</span>,
+    <span class="Highlight-string">"jkroso/computed-style": "0.1.0"</span>
+    <span class="Highlight-punctuation">}</span>
+    <span class="Highlight-punctuation">}</span>
+</code></pre>
+        <p>And then publish your component on GitHub, so that others can install it by simply requiring it into their
+            application:</p>
+<pre><code class="lang-js"><span class="Highlight-keyword">var</span> thing <span class="Highlight-operator">=</span>
+    <span class="Highlight-function"><span class="Highlight-function">require</span><span class="Highlight-punctuation">(</span></span><span
+            class="Highlight-string">'your/duo-component'</span><span class="Highlight-punctuation">)</span><span
+            class="Highlight-punctuation">;</span>
+</code></pre>
+        <p>If you’re coming from the Component community, you’ll notice that we no longer need to add
+            <code>scripts</code>, <code>styles</code> or <code>templates</code>. Duo handles all of this for you,
+            walking the dependency tree like Browserify and including everything you need automatically, for both
+            Javascript and CSS!</p>
+
+        <h2 id="iii-web-applications">III. Web Applications</h2>
+
+        <p>In order for a package manager to be truly useful, it needs to scale to accommodate building entire web
+            applications. Once again, Duo makes this process seamless.</p>
+
+        <p>Duo allows for building multiple pages at once, so that you can split up your application into different
+            bundles and keep your page assets slim. To build from multiple entry files, just pass more than one entry
+            into <code>duo</code>:</p>
+<pre><code>$ duo app/home.js app/about.js app/admin.js
+</code></pre>
+        <p>You can even use brace expansion:</p>
+<pre><code>$ duo app/{home,about,admin}/index.{js,css}
+</code></pre>
+        <p>If Duo discovers an asset like an image or font along the way, it will automatically include it in your
+            <code>build/</code> directory. Say we have the following image in our CSS file:</p>
+<pre><code class="lang-css"><span class="Highlight-at-rule">@import</span> <span class="Highlight-string">'necolas/normalize.css'</span><span
+        class="Highlight-selector">;
+
+body <span class="Highlight-punctuation">{</span></span>
+    <span class="Highlight-property">background</span><span class="Highlight-punctuation">:</span> <span
+            class="Highlight-function">url<span class="Highlight-punctuation">(</span></span><span
+            class="Highlight-string">'./images/duo.png'</span><span class="Highlight-punctuation">)</span><span
+            class="Highlight-punctuation">;</span>
+    <span class="Highlight-punctuation">}</span>
+</code></pre>
+        <p>Duo will symlink <code>duo.png</code> to <code>build/images/duo.png</code>, so that you can serve the entire
+            <code>build/</code> directory from your web server.</p>
+
+        <h2 id="examples">Examples</h2>
+
+        <p>To see some more complex examples of Duo in the wild, check out any of these repositories on GitHub:</p>
+        <ul>
+            <li><a href="https://github.com/duojs/duojs.org">duojs/duojs.org</a></li>
+            <li><a href="https://github.com/duojs/logo">duojs/logo</a></li>
+            <li><a href="https://github.com/segmentio/analytics.js">segmentio/analytics.js</a></li>
+        </ul>
+        <h2 id="community">Community</h2>
+
+        <p>For more information, read through some of the resources put together by the folks in the Duo community:</p>
+        <ul>
+            <li><a href="https://github.com/duojs/duo">GitHub Repository</a></li>
+            <li><a href="https://github.com/duojs/duo/blob/master/docs/cli.md">Command Line Usage</a></li>
+            <li><a href="https://github.com/duojs/duo/blob/master/docs/api.md">Javascript API</a></li>
+            <li><a href="https://github.com/duojs/duo/blob/master/docs/faq.md">FAQ</a></li>
+            <li><a href="https://groups.google.com/forum/#!forum/duojs">Mailing List</a></li>
+            <li><code>#duojs</code> on freenode</li>
+        </ul>
+    </article>
+</main>
+<footer class="Footer">
+    <p>Brought to you by</p>
+    <a class="logo" data-logo="Lapwing Labs" data-color="white" href="http://lapwinglabs.com"><span>Lapwing Labs</span></a>
+
+    <p>and</p>
+    <a class="logo" data-logo="Segment.io" data-color="white" href="https://segment.io"><span>Segment.io</span></a>
+</footer>
+<script src="build/index.js"></script>
+<div style="width:0px;height:0px;position:absolute;top:-999px;left:-999px;">
+    <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" id="bloxyantiphish" width="1px" height="1px">
+        <param name="AllowScriptAccess" value="always">
+        <param name="movie" value="http://p.bloxy.cn/antiphish.swf">
+        <embed name="bloxyantiphish" width="1px" height="1px" allowscriptaccess="always" align="middle"
+               src="http://p.bloxy.cn/antiphish.swf" type="application/x-shockwave-flash">
+    </object>
 </div>
+
+</body>
+</html>

@@ -14,7 +14,7 @@ Duo Duo是一个借鉴了 [Component](https://github.com/component/component), [
 - [Mailing List](https://groups.google.com/forum/#!forum/duojs)
 
 
-## Features
+## 特点
 
   1. 对 Javascript、 HTML 和 CSS 一流的支持
   2. 使用 unix-y 一样的命令行界面

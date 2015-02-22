@@ -376,25 +376,26 @@
     <form class="Header-search">
         <input class="Header-search-input" type="text" placeholder="Search packages...">
     </form>
-    <h1 class="Header-title logo" data-logo="Duo" data-color="white"><a href="/">Duo</a></h1>
+    <h1 class="Header-title logo" data-logo="Duo" data-color="white">
+        <a href="/">Duo</a></h1>
 
-    <p class="Header-tagline">A next-generation package manager for the front-end.</p>
+    <p class="Header-tagline">web 前端下一代包管理工具</p>
     <a class="Header-github" href="https://github.com/duojs/duo">View on GitHub</a>
 </header>
 <main>
-    <article><p>Duo is a next-generation package manager that blends the best ideas from <a
+    <article>
+        <p>Duo是一个借鉴了  <a
             href="https://github.com/component/component">Component</a>, <a
-            href="https://github.com/substack/node-browserify">Browserify</a> and <a href="http://golang.org/">Go</a> to
-        make organizing and writing front-end code quick and painless.</p>
+            href="https://github.com/substack/node-browserify">Browserify</a> 和 <a href="http://golang.org/">Go</a> 最好的思想，使组织和编写前端代码快速的下一代包管理工具。</p>
 
-        <h2 id="install-it">Install It</h2>
+        <h2 id="install-it">安装</h2>
 
-        <p>Install Duo straight from <code>npm</code> with:</p>
+        <p>从 <code>npm</code> 安装它:</p>
 <pre><code>$ npm install -g duo
 </code></pre>
-        <h2 id="getting-started">Getting Started</h2>
+        <h2 id="getting-started">入门教程</h2>
 
-        <p>To get started just write normal Javascript, requiring from GitHub as you need them:</p>
+        <p>我们可以正常去书写javascript代码，直接从github中require需要依赖的类库就可以：</p>
 <pre><code class="lang-js"><span class="Highlight-keyword">var</span> uid <span class="Highlight-operator">=</span>
     <span class="Highlight-function"><span class="Highlight-function">require</span><span class="Highlight-punctuation">(</span></span><span
             class="Highlight-string">'matthewmueller/uid'</span><span class="Highlight-punctuation">)</span><span
@@ -415,27 +416,26 @@
             class="Highlight-function"><span class="Highlight-function">alert</span><span class="Highlight-punctuation">(</span></span>msg<span
             class="Highlight-punctuation">)</span><span class="Highlight-punctuation">;</span>
 </code></pre>
-        <p>That <code>matthewmueller/uid</code> will pull the dependency <a
-                href="https://github.com/matthewmueller/uid">straight from GitHub</a>, without you needing to edit any
-            package manifest file!</p>
+        <p> <code>matthewmueller/uid</code> 将会直接从 <a
+                href="https://github.com/matthewmueller/uid">GitHub</a>拉去依赖,而不需要编辑任何程序包清单文件</p>
 
-        <p>You can also require modules straight from your file system:</p>
+        <p>您还可以直接从您的文件系统require模块：:</p>
 <pre><code class="lang-js"><span class="Highlight-keyword">var</span> modal <span class="Highlight-operator">=</span>
     <span class="Highlight-function"><span class="Highlight-function">require</span><span class="Highlight-punctuation">(</span></span><span
             class="Highlight-string">'./modal/index.js'</span><span class="Highlight-punctuation">)</span><span
             class="Highlight-punctuation">;</span>
 </code></pre>
-        <p>Then use <code>duo</code> to install your dependencies and build your file:</p>
+        <p>然后使用<code>duo</code>安装你的依赖并且编译文件:</p>
 <pre><code>$ duo index.js
 </code></pre>
-        <p>Finally, drop a single <code>&lt;script&gt;</code> onto your page and you’re done!</p>
+        <p>最后将 <code>&lt;script&gt;</code>放置到网页中就大功告成了！</p>
 <pre><code class="lang-html"><span class="Highlight-tag"><span class="Highlight-punctuation">&lt;</span><span
         class="Highlight-name">script</span> <span class="Highlight-attribute">src</span><span
         class="Highlight-punctuation">=</span><span class="Highlight-string">"build/index.js"</span><span
         class="Highlight-punctuation">&gt;</span></span><span class="Highlight-tag"><span class="Highlight-punctuation">&lt;/</span><span
         class="Highlight-name">script</span><span class="Highlight-punctuation">&gt;</span></span>
 </code></pre>
-        <p>Same goes for CSS! You can require dependencies and assets straight from GitHub or from the file system:</p>
+        <p>对于css也是同样的原理!你可以直接从github或者本地文件系统引用依赖文件或者资源:</p>
 <pre><code class="lang-css"><span class="Highlight-at-rule">@import</span> <span class="Highlight-string">'necolas/normalize.css'</span><span
         class="Highlight-punctuation">;</span>
     <span class="Highlight-at-rule">@import</span> <span class="Highlight-string">'./layout/layout.css'</span><span
@@ -450,40 +450,38 @@ body <span class="Highlight-punctuation">{</span></span>
             class="Highlight-punctuation">;</span>
     <span class="Highlight-punctuation">}</span>
 </code></pre>
-        <p>Then bundle up your CSS with <code>duo</code>:</p>
+        <p>然后使用 <code>duo</code>处理css文件:</p>
 <pre><code>$ duo index.css
 </code></pre>
-        <p>And add your bundled-up stylesheet to your page!</p>
+        <p>最后将处理过的文件加入到您的页面!</p>
 <pre><code class="lang-html"><span class="Highlight-tag"><span class="Highlight-punctuation">&lt;</span><span
         class="Highlight-name">link</span> <span class="Highlight-attribute">rel</span><span
         class="Highlight-punctuation">=</span><span class="Highlight-string">"stylesheet"</span> <span
         class="Highlight-attribute">href</span><span class="Highlight-punctuation">=</span><span
         class="Highlight-string">"build/index.css"</span><span class="Highlight-punctuation">&gt;</span></span>
 </code></pre>
-        <h2 id="features">Features</h2>
+        <h2 id="features">功能</h2>
         <ol>
-            <li>has first-class support for Javascript, HTML and CSS</li>
-            <li>exposes a unix-y command line interface</li>
-            <li>pulls source directly from GitHub with semantic versioning</li>
-            <li>supports source transforms, like Coffeescript or Sass</li>
-            <li>does not require a manifest</li>
+            <li>对 Javascript、 HTML 和 CSS 一流的支持</li>
+            <li>使用 unix-y 一样的命令行界面</li>
+            <li>直接从 GitHub拉取代码源文件或者相应版本</li>
+            <li>支持源转换，如 Coffeescript 或SASS</li>
+            <li>不需要一个清单文件</li>
         </ol>
-        <h2 id="philosophy">Philosophy</h2>
+        <h2 id="philosophy">哲学</h2>
 
-        <p>Duo was designed from the ground up to grow alongside your application, making your three main workflows
-            incredibly simple:</p>
+        <p>Duo在从底向上构建您的应用程序，使下面三个主要工作流非常简单：</p>
         <ol>
-            <li>creating quick proofs of concept</li>
-            <li>writing modular components</li>
-            <li>building large web applications</li>
+            <li>快速构建用例</li>
+            <li>编写模块化组件</li>
+            <li>构建大型web应用程序</li>
         </ol>
-        <h2 id="i-proofs-of-concept">I. Proofs of Concept</h2>
+        <h2 id="i-proofs-of-concept">I. 概念证明</h2>
 
-        <p>As developers, we often need to test out an idea or isolate a bug. One of the big issues with existing
-            package managers is that you cannot use your package manager without a lot of boilerplate files like <code>package.json</code>
-            or <code>component.json</code>.</p>
+        <p>作为开发人员，我们经常需要测试一个idea或隔离 bug。现有的软件包管理器的大问题之一就是你不能在没有如<code>package.json</code>
+           或者 <code>component.json</code>的样板文件时使用软件包管理器</p>
 
-        <p>Duo removes this boilerplate, letting you <code>require</code> packages straight from your source code:</p>
+        <p>Duo 移出了这样的文件, 让您可以直接从源代码中<code>require</code> 相关包:</p>
 <pre><code class="lang-js"><span class="Highlight-keyword">var</span> events <span class="Highlight-operator">=</span>
     <span class="Highlight-function"><span class="Highlight-function">require</span><span class="Highlight-punctuation">(</span></span><span
             class="Highlight-string">'component/events'</span><span class="Highlight-punctuation">)</span><span
@@ -493,7 +491,7 @@ body <span class="Highlight-punctuation">{</span></span>
             class="Highlight-punctuation">(</span></span><span class="Highlight-string">'matthewmueller/uid'</span><span
             class="Highlight-punctuation">)</span><span class="Highlight-punctuation">;</span>
 </code></pre>
-        <p>You can also include versions, branches or paths:</p>
+        <p>您还可以使用duo添加包括版本、 分支或路径信息的依赖:</p>
 <pre><code class="lang-js"><span class="Highlight-keyword">var</span> reactive <span class="Highlight-operator">=</span>
     <span class="Highlight-function"><span class="Highlight-function">require</span><span class="Highlight-punctuation">(</span></span><span
             class="Highlight-string">'component/reactive@0.14.x'</span><span class="Highlight-punctuation">)</span><span
@@ -508,13 +506,13 @@ body <span class="Highlight-punctuation">{</span></span>
             class="Highlight-punctuation">(</span></span><span class="Highlight-string">'yields/shortcuts@0.0.1:/index.js'</span><span
             class="Highlight-punctuation">)</span><span class="Highlight-punctuation">;</span>
 </code></pre>
-        <p>And the same goes for CSS with <code>import</code>:</p>
+        <p>同样的适用于 css 文件 的<code>import</code>:</p>
 <pre><code class="lang-css"><span class="Highlight-at-rule">@import</span> <span class="Highlight-string">'necolas/normalize.css'</span><span
         class="Highlight-punctuation">;</span>
     <span class="Highlight-at-rule">@import</span> <span class="Highlight-string">'twbs/bootstrap@v3.2.0:dist/css/bootstrap.css'</span><span
             class="Highlight-punctuation">;</span>
 </code></pre>
-        <p>You can even directly require <code>.html</code> or <code>.json</code> files:</p>
+        <p>您甚至可以直接可以要求 <code>.html</code> 或者 <code>.json</code> 文件:</p>
 <pre><code class="lang-js"><span class="Highlight-keyword">var</span> template <span class="Highlight-operator">=</span>
     <span class="Highlight-function"><span class="Highlight-function">require</span><span class="Highlight-punctuation">(</span></span><span
             class="Highlight-string">'./menu.html'</span><span class="Highlight-punctuation">)</span><span
@@ -524,27 +522,24 @@ body <span class="Highlight-punctuation">{</span></span>
             class="Highlight-punctuation">(</span></span><span class="Highlight-string">'./schema.json'</span><span
             class="Highlight-punctuation">)</span><span class="Highlight-punctuation">;</span>
 </code></pre>
-        <p>Duo will take care of the rest, transforming the <code>.html</code> into a Javascript string, and
-            <code>.json</code> into a Javascript object.</p>
+        <p>Duo将做剩下的工作如转换<code>.html</code>为Javascript 字符串或者转换
+            <code>.json</code> 为一个js对象.</p>
 
-        <p>When you’re ready to build your files, just run:</p>
+        <p>当你准备好建立您的文件时，只需运行：:</p>
 <pre><code>$ duo index.js index.css
 </code></pre>
-        <p>The new files will be located in the newly created <code>build/</code> directory, using the same structure as
-            your project.</p>
+        <p>duo新生成文件将出现在新创建的build/目录中，并且和您的项目使用相同的目录结构。</p>
 
-        <h2 id="ii-components">II. Components</h2>
+        <h2 id="ii-components">II. 组件</h2>
 
-        <p>A successful package manager needs to have a strong component ecosystem. Duo supports all of the existing <a
-                href="https://github.com/component/component/wiki/Components">Component packages</a> out of the box.
-            And, since Duo can load from paths, it supports many <a href="http://bower.io/search/">Bower packages</a>
-            too. <em>There are even plans to support <a href="https://www.npmjs.org/browse/keyword/browser">Browserify
-                packages</a> as well.</em></p>
+        <p>成功的软件包管理器需要有一个强有力的构成部分的生态系统. Duo 支持所有现有的 <a
+                href="https://github.com/component/component/wiki/Components">组件包</a>
+            并且, 因为Duo可以直接从目录中加载, 所以它也支持 <a href="http://bower.io/search/">Bower 包</a> <em>甚至有计划支持 <a href="https://www.npmjs.org/browse/keyword/browser">Browserify
+                包</a> </em></p>
 
-        <p>We’re hoping to bridge the gap between all the different package managers and come up with a solution that
-            works for everyone.</p>
+        <p>我们希望Duo成为连接不同包管理工具的桥梁并且为每个人都提供合适的解决方案</p>
 
-        <p>To create your own public component, just add a <code>component.json</code> to your repository:</p>
+        <p>若要创建您自己的公共组件，只需添加, 只需要天剑一个 <code>component.json</code> 到你的存储库里:</p>
 <pre><code class="lang-json"><span class="Highlight-punctuation">{</span>
     <span class="Highlight-string">"name": "duo-component"</span>,
     <span class="Highlight-string">"version": "0.0.1"</span>,
@@ -556,33 +551,27 @@ body <span class="Highlight-punctuation">{</span></span>
     <span class="Highlight-punctuation">}</span>
     <span class="Highlight-punctuation">}</span>
 </code></pre>
-        <p>And then publish your component on GitHub, so that others can install it by simply requiring it into their
-            application:</p>
+        <p>然后发布您的组件到 GitHub，以便其他人可以通过简单require将它安装到其应用程序中:</p>
 <pre><code class="lang-js"><span class="Highlight-keyword">var</span> thing <span class="Highlight-operator">=</span>
     <span class="Highlight-function"><span class="Highlight-function">require</span><span class="Highlight-punctuation">(</span></span><span
             class="Highlight-string">'your/duo-component'</span><span class="Highlight-punctuation">)</span><span
             class="Highlight-punctuation">;</span>
 </code></pre>
-        <p>If you’re coming from the Component community, you’ll notice that we no longer need to add
-            <code>scripts</code>, <code>styles</code> or <code>templates</code>. Duo handles all of this for you,
-            walking the dependency tree like Browserify and including everything you need automatically, for both
-            Javascript and CSS!</p>
+        <p>如果你来自一个组件社区，你会发现我们不再需要添加
+            <code>scripts</code>, <code>styles</code> or <code>templates</code>. Duo 为你处理了一切,像Browserify一样处理依赖树关系并且自动包含你所需要的文件比如
+            Javascript 和 CSS!</p>
 
-        <h2 id="iii-web-applications">III. Web Applications</h2>
+        <h2 id="iii-web-applications">III.Web 应用程序</h2>
 
-        <p>In order for a package manager to be truly useful, it needs to scale to accommodate building entire web
-            applications. Once again, Duo makes this process seamless.</p>
+        <p>为了使软件包管理器要真正有用， 它需要扩展以便构建整个 web 应用程序. 再者, Duo 无缝处理这一过程.</p>
 
-        <p>Duo allows for building multiple pages at once, so that you can split up your application into different
-            bundles and keep your page assets slim. To build from multiple entry files, just pass more than one entry
-            into <code>duo</code>:</p>
+        <p>Duo 允许一次建设多个页面, 以便你能分割你的应用程序到不同的bundle，并且让你的应用程序保持一个好身材， 若要从多个输入文件生成，只是通过 <code>duo</code>传递多个参数:</p>
 <pre><code>$ duo app/home.js app/about.js app/admin.js
 </code></pre>
-        <p>You can even use brace expansion:</p>
+        <p>您甚至可以使用大括号扩展:</p>
 <pre><code>$ duo app/{home,about,admin}/index.{js,css}
 </code></pre>
-        <p>If Duo discovers an asset like an image or font along the way, it will automatically include it in your
-            <code>build/</code> directory. Say we have the following image in our CSS file:</p>
+        <p>如果Duo发现了像图片，字体一样的资源,他会自动的将这些包含在<code>build/</code> 文件夹. S假设我们有如下的css文件:</p>
 <pre><code class="lang-css"><span class="Highlight-at-rule">@import</span> <span class="Highlight-string">'necolas/normalize.css'</span><span
         class="Highlight-selector">;
 
@@ -593,20 +582,20 @@ body <span class="Highlight-punctuation">{</span></span>
             class="Highlight-punctuation">;</span>
     <span class="Highlight-punctuation">}</span>
 </code></pre>
-        <p>Duo will symlink <code>duo.png</code> to <code>build/images/duo.png</code>, so that you can serve the entire
-            <code>build/</code> directory from your web server.</p>
+        <p>Duo将会链接 <code>duo.png</code> 到 <code>build/images/duo.png</code>, 以便你可以将整个
+            <code>build/</code> 目录放到你的web服务器中</p>
 
-        <h2 id="examples">Examples</h2>
+        <h2 id="examples">例子</h2>
 
-        <p>To see some more complex examples of Duo in the wild, check out any of these repositories on GitHub:</p>
+        <p>如果想看一些更复杂的例子请参阅这里:</p>
         <ul>
             <li><a href="https://github.com/duojs/duojs.org">duojs/duojs.org</a></li>
             <li><a href="https://github.com/duojs/logo">duojs/logo</a></li>
             <li><a href="https://github.com/segmentio/analytics.js">segmentio/analytics.js</a></li>
         </ul>
-        <h2 id="community">Community</h2>
+        <h2 id="community">社区</h2>
 
-        <p>For more information, read through some of the resources put together by the folks in the Duo community:</p>
+        <p>更多的信息，请阅读Duo社区的一些资源:</p>
         <ul>
             <li><a href="https://github.com/duojs/duo">GitHub Repository</a></li>
             <li><a href="https://github.com/duojs/duo/blob/master/docs/cli.md">Command Line Usage</a></li>
